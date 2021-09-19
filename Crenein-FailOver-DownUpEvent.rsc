@@ -6,13 +6,15 @@
 :local telegrambot "";
 :local telegramchatid "";
 #------------------------------------#
+:global foicmpprobedst ;
+#------------------------------------#
 :foreach peer in=$peers do={
   :if (($peer->"enabled") = 1) do={
     :if (($peer->"peersfail") = 1 and ($peer->"beforepeersfail") = 0) do={
       :local message ("Peer Fail " .($peer->"name")." || "."Peer Fail Reason " .($peer->"peersfailreason"));
       :log warning $message;
       #----------------Que hacer al estar caido--------------------#
-      /ip route disable [/ip route find routing-mark=($peer->"name")];
+      /ip route disable [/ip route find routing-mark=($peer->"name") and dst-address!=($foicmpprobedst."/32")];
       /ip route disable [/ip route find comment=($peer->"name")];
       /system note set note="1";
       do {

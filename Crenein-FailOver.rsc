@@ -4,7 +4,6 @@
   name="IZ";
   enabled=1;
   ifname="pppoe-out1";
-  gateway="";
   minthroughput=12000000;
   srcaddicmp="";
   upeventscript="Crenein-FailOver-DownUpEvent";
@@ -18,7 +17,6 @@
   name="Compus";
   enabled=0;
   ifname="ether2";
-  gateway="";
   minthroughput=0;
   srcaddicmp="";
   upeventscript="Crenein-FailOver-DownUpEvent";
@@ -31,7 +29,7 @@
 #------------------------------------#
 :local peers {$peer1;$peer2};
 ##----------------ICMP Configuration----------------##
-:local foicmpprobedst "1.0.0.1"; #Destino al que se le hace ping
+:global foicmpprobedst "1.0.0.1"; #Destino al que se le hace ping
 :local foicmpprobesend "10"; #Cantidad de paquetes a enviar
 :local foicmpproberecibe "8"; #Cantidad de paquetes que debo recibir
 :local foicmpprobesize "64"; #Tamaño de paquete
@@ -48,7 +46,6 @@ local loopdelay "15"; #Tiempo de espera para próxima iteracion.
 			:put ("Peer enabled ". "--> " .($peer->"enabled"));
 			:put ("Interface name ". "--> " .($peer->"ifname"));
 			:put ("Default route comment ". "--> " .($peer->"name"));
-			:put ("Gateway --> " .($peer->"gateway"));
 			:put ("Min. Throughput --> " .($peer->"minthroughput"));
 			:put ("Ping src-address --> " .($peer->"srcaddicmp"));
 			:put ("UpEvent Script --> " .($peer->"upeventscript"));
@@ -69,16 +66,22 @@ local loopdelay "15"; #Tiempo de espera para próxima iteracion.
 				:if (($trafficmonitor->"rx-bits-per-second") < ($peer->"minthroughput")) do={
 					:put "Traffic-Probe --> FAIL";
 					##---------------------Gateway-Probe----------------------##	
-					:if ([/ip route get [/ip route find routing-mark=($peer->"name") and dst-address="0.0.0.0/0"] gateway-status] ~ "unreachable")) do={
-						:put "Gateway-Probe --> OK"
+					:if ([/ip route get [/ip route find routing-mark=($peer->"name") and dst-address=($foicmpprobedst."/32")] gateway-status] ~ "unreachable") do={
+						:put "Gateway-Probe --> FAIL";
+						:set ($peer->"peersfailreason") "Gateway-Probe --> FAIL";
+						:if (($peer->"downsupscount") < $downsups) do={
+							:set ($peer->"downsupscount") (($peer->"downsupscount") + 1);
+						}
+					} else={
+						:put "Gateway-Probe --> OK";
 						##---------------------ICMP-Probe----------------------##
 						:local pingrouting ;
 						:if (($peer->"srcaddicmp") = "") do={
-							:put "Sin SRC";
+							:put "Ejecucion de prueba ping sin src-address";
 							:set pingrouting [ping $foicmpprobedst count=$foicmpprobesend routing-table=($peer->"name") size=$foicmpprobesize];
 						}
 						:if (($peer->"srcaddicmp") ~ ".") do={
-							:put "Con SRC";
+							:put "Ejecucion de prueba ping con src-address";
 							:set pingrouting [ping $foicmpprobedst count=$foicmpprobesend routing-table=($peer->"name") size=$foicmpprobesize src-address=($peer->"srcaddicmp")];
 						} 
 						:put ("ICMP-Probe result is send --> ".$foicmpprobesend." received --> ".$pingrouting);
@@ -92,14 +95,7 @@ local loopdelay "15"; #Tiempo de espera para próxima iteracion.
 							:put "ICMP-Probe --> OK";
 							:if (($peer->"downsupscount") > 0) do={
 								:set ($peer->"downsupscount") (($peer->"downsupscount") - 1);
-								
 							}
-						}
-					} else={
-						:put "Gateway-Probe --> FAIL";
-						:set ($peer->"peersfailreason") "Gateway-Probe --> FAIL";
-						:if (($peer->"downsupscount") < $downsups) do={
-							:set ($peer->"downsupscount") (($peer->"downsupscount") + 1);
 						}
 					}
 				} else={
