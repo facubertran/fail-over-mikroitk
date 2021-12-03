@@ -128,24 +128,25 @@ add dont-require-permissions=no name=Crenein-FailOver owner=admin policy=ftp,reb
     \n\t\t} else={\r\
     \n\t\t\t#:put (\"Peer \". (\$peer->\"name\"). \" disabled\");\r\
     \n\t\t}\r\
-    \n\t}\r\
+    \n\t}\r\owner=admin policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon 
     \n\t:put \"...\";\r\
     \n\t:delay \$loopdelay;\r\
     \n}"
-add dont-require-permissions=no name=Crenein-FailOver-DownUpEvent owner=admin policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source="#V5\r\
+add dont-require-permissions=no name=Crenein-FailOver-DownUpEvent source="#V5\r\
     \n#----------------Peers-Declaration--------------------#\r\
     \n:global peer1; global peer2;\r\
     \n:local peers {\$peer1;\$peer2};\r\
     \n##-----------------Telegram-Notification-----------------##\r\
     \n:local telegrambot \"\";\r\
     \n:local telegramchatid \"\";\r\
+    \n:local ispname \"\";\r\
     \n#------------------------------------#\r\
     \n:global foicmpprobedst ;\r\
     \n#------------------------------------#\r\
     \n:foreach peer in=\$peers do={\r\
     \n  :if ((\$peer->\"enabled\") = 1) do={\r\
     \n    :if ((\$peer->\"peersfail\") = 1 and (\$peer->\"beforepeersfail\") = 0) do={\r\
-    \n      :local message (\"Peer Fail \" .(\$peer->\"name\").\" || \".\"Peer Fail Reason \" .(\$peer->\"peersfailreason\"));\r\
+    \n      :local message (\$ispname . \" -> \" . \"Peer Fail \" .(\$peer->\"name\").\" || \".\"Peer Fail Reason \" .(\$peer->\"peersfailreason\"));\r\
     \n      :log warning \$message;\r\
     \n      #----------------Que hacer al estar caido--------------------#\r\
     \n      /ip route disable [/ip route find routing-mark=(\$peer->\"name\") and dst-address!=(\$foicmpprobedst.\"/32\")];\r\
@@ -156,7 +157,7 @@ add dont-require-permissions=no name=Crenein-FailOver-DownUpEvent owner=admin po
     \n      } on-error={}\r\
     \n    } \r\
     \n    if ((\$peer->\"peersfail\") = 0 and (\$peer->\"beforepeersfail\") = 1) do={\r\
-    \n      :local message (\"Peer Recover \" .(\$peer->\"name\"));\r\
+    \n      :local message (\$ispname . \" -> \" . \"Peer Recover \" .(\$peer->\"name\"));\r\
     \n      :log warning \$message;\r\
     \n      #----------------Que hacer al recuperarse--------------------#\r\
     \n      /ip route enable [/ip route find routing-mark=(\$peer->\"name\")];\r\

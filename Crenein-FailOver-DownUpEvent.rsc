@@ -5,13 +5,14 @@
 ##-----------------Telegram-Notification-----------------##
 :local telegrambot "";
 :local telegramchatid "";
+:local ispname "";
 #------------------------------------#
 :global foicmpprobedst ;
 #------------------------------------#
 :foreach peer in=$peers do={
   :if (($peer->"enabled") = 1) do={
     :if (($peer->"peersfail") = 1 and ($peer->"beforepeersfail") = 0) do={
-      :local message ("Peer Fail " .($peer->"name")." || "."Peer Fail Reason " .($peer->"peersfailreason"));
+      :local message ($ispname . " -> " . "Peer Fail " .($peer->"name")." || "."Peer Fail Reason " .($peer->"peersfailreason"));
       :log warning $message;
       #----------------Que hacer al estar caido--------------------#
       /ip route disable [/ip route find routing-mark=($peer->"name") and dst-address!=($foicmpprobedst."/32")];
@@ -22,7 +23,7 @@
       } on-error={}
     } 
     if (($peer->"peersfail") = 0 and ($peer->"beforepeersfail") = 1) do={
-      :local message ("Peer Recover " .($peer->"name"));
+      :local message ($ispname . " -> " . "Peer Recover " .($peer->"name"));
       :log warning $message;
       #----------------Que hacer al recuperarse--------------------#
       /ip route enable [/ip route find routing-mark=($peer->"name")];
