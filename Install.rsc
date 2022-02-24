@@ -128,7 +128,7 @@ add dont-require-permissions=no name=Crenein-FailOver owner=admin policy=ftp,reb
     \n\t\t} else={\r\
     \n\t\t\t#:put (\"Peer \". (\$peer->\"name\"). \" disabled\");\r\
     \n\t\t}\r\
-    \n\t}\r\owner=admin policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon 
+    \n\t}\r\
     \n\t:put \"...\";\r\
     \n\t:delay \$loopdelay;\r\
     \n}"
