@@ -1,0 +1,12 @@
+{
+    "dst_ping": "1.0.0.1",
+    "icmp_packets_loss_percent": 20,
+    "delay": 15,
+    "telegram_bot": "token",
+    "telegram_chat_id": "chatid",
+    "isp_name": "ISP-1",
+    "router_ip": "192.168.251.1",
+    "router_port": 443,
+    "router_user": "api",
+    "router_password": "apip"
+}

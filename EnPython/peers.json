@@ -1,0 +1,19 @@
+{
+    "peers": 
+    [
+        {
+            "name": "Peer1",
+            "enabled": 1,
+            "ifname": "ether10",
+            "gateway": "192.168.231.1",
+            "minthroughput": 12000000
+        },
+        {
+            "name": "Peer2",
+            "enabled": 1,
+            "ifname": "ether11",
+            "gateway": "192.168.232.1",
+            "minthroughput": 12000000
+        }
+    ]
+}
