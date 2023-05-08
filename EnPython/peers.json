@@ -2,19 +2,83 @@
     "peers": 
     [
         {
-            "name": "Gigared",
+            "name": "PPP_WAN1",
             "enabled": 1,
-            "ifname": "ether10",
-            "gateway": "192.168.231.1",
-            "minthroughput": 12000000,
+            "ifname": "PPP_WAN1",
+            "gateway": "PPP_WAN1",
+            "minthroughput": 1250000,
             "counts": 0
         },
         {
-            "name": "Compus",
+            "name": "PPP_WAN2",
             "enabled": 1,
-            "ifname": "ether11",
-            "gateway": "192.168.232.1",
-            "minthroughput": 12000000,
+            "ifname": "PPP_WAN2",
+            "gateway": "PPP_WAN2",
+            "minthroughput": 1250000,
+            "counts": 0
+        },
+        {
+            "name": "PPP_WAN3",
+            "enabled": 1,
+            "ifname": "PPP_WAN3",
+            "gateway": "PPP_WAN3",
+            "minthroughput": 1250000,
+            "counts": 0
+        },
+        {
+            "name": "PPP_WAN4",
+            "enabled": 1,
+            "ifname": "PPP_WAN4",
+            "gateway": "PPP_WAN4",
+            "minthroughput": 1250000,
+            "counts": 0
+        },
+        {
+            "name": "PPP_WAN6",
+            "enabled": 1,
+            "ifname": "PPP_WAN6",
+            "gateway": "PPP_WAN6",
+            "minthroughput": 1250000,
+            "counts": 0
+        },
+        {
+            "name": "PPP_WAN7",
+            "enabled": 1,
+            "ifname": "PPP_WAN7",
+            "gateway": "PPP_WAN7",
+            "minthroughput": 1250000,
+            "counts": 0
+        },
+        {
+            "name": "PPP_WAN8",
+            "enabled": 1,
+            "ifname": "PPP_WAN8",
+            "gateway": "PPP_WAN8",
+            "minthroughput": 1250000,
+            "counts": 0
+        },
+        {
+            "name": "PPP_WAN9",
+            "enabled": 1,
+            "ifname": "PPP_WAN9",
+            "gateway": "PPP_WAN9",
+            "minthroughput": 1250000,
+            "counts": 0
+        },
+        {
+            "name": "PPP_WAN10",
+            "enabled": 1,
+            "ifname": "PPP_WAN10",
+            "gateway": "PPP_WAN10",
+            "minthroughput": 1250000,
+            "counts": 0
+        },
+        {
+            "name": "PPP_WAN11",
+            "enabled": 1,
+            "ifname": "PPP_WAN11",
+            "gateway": "PPP_WAN11",
+            "minthroughput": 1250000,
             "counts": 0
         }
     ]

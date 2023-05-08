@@ -68,7 +68,25 @@ def check_traffic(interface, minthroughput):
         script_fail("check_traffic", e)
         return "Except"
 
-def set_check_gw(gateway):
+def check_gw(peer):
+    config = get_config()
+
+    try:
+        get_gw_id = requests.get(
+            get_base_url()+"/ip/route?comment="+peer['name'], 
+            auth=(config['router_user'], config['router_password']), 
+            verify=False)
+        get_gw_id = get_gw_id.json()
+        
+        if get_gw_id[0]['inactive'] == "true" and get_gw_id[0]['disabled'] == "false":
+            return False
+        else:
+            return True
+    except Exception as e:
+        script_fail("check_gw", e)
+        return "Except"
+
+def set_gw(gateway):
     config = get_config()
 
     try:
@@ -78,19 +96,12 @@ def set_check_gw(gateway):
             verify=False)
         get_gw_id = get_gw_id.json()
 
-        response = requests.patch(get_base_url()+"/ip/route/"+get_gw_id[0]['.id'], json = {"gateway": gateway}, auth=(config['router_user'], config['router_password']), verify=False)
-        time.sleep(2)
-        validate_set = requests.get(
-            get_base_url()+"/ip/route?comment=FailOverControl", 
-            auth=(config['router_user'], config['router_password']), 
-            verify=False).json()
-        
-        if validate_set[0]['inactive'] == "true":
-            return False
-        else:
-            return True
+        if get_gw_id[0]['gateway'] != gateway:
+            response = requests.patch(get_base_url()+"/ip/route/"+get_gw_id[0]['.id'], json = {"gateway": gateway}, auth=(config['router_user'], config['router_password']), verify=False)
+        return True
+
     except Exception as e:
-        script_fail("set_check_gw", e)
+        script_fail("set_gw", e)
         return "Except"
 
 def check_ping():
@@ -161,13 +172,15 @@ def enable_routes(peer):
 
 def fail_action(peer):
     print(peer['name'] + " CON FALLAS")
-    send_notificaiont(peer['name'], " CON FALLAS")
     disable_routes(peer)
+    time.sleep(1)
+    send_notificaiont(peer['name'], " CON FALLAS")
 
 def recover_action(peer):
     print(peer['name']+ " NUEVAMENTE ACTIVO")
-    send_notificaiont(peer['name'], " NUEVAMENTE ACTIVO")
     enable_routes(peer)
+    time.sleep(1)
+    send_notificaiont(peer['name'], " NUEVAMENTE ACTIVO")
 
 def validate_status(peer):
     if peer['counts'] >= 2:

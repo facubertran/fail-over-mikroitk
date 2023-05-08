@@ -33,7 +33,7 @@ if __name__ == "__main__":
             if ifstatus:
                 ##---------------------Gateway-Probe----------------------##
                 #print("Chequeando estado de gateway ...")
-                gateway = set_check_gw(x['gateway'])
+                gateway = True
                 if gateway:
                     ##---------------------Traffic-Probe----------------------##
                     #print("Chequeando trafico en interfaz ...")
@@ -41,6 +41,7 @@ if __name__ == "__main__":
                     if not traffic:
                         ##---------------------Ping-Probe----------------------##
                         #print("Haciendo prueba de ping ...")
+                        set_gw(x['gateway'])
                         ping = check_ping()
                         if ping:
                             peer_ok(x)

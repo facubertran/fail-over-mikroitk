@@ -2,11 +2,11 @@
     "dst_ping": "1.0.0.1",
     "icmp_packets_loss_percent": 20,
     "delay": 15,
-    "telegram_token": "1929307089:AAGXIgvyO6B8QUGhnGhm47IT708SvmMgbqc",
-    "telegram_chat_id": "-1001400586805",
-    "isp_name": "ISP-1",
-    "router_ip": "192.168.251.1",
+    "telegram_token": "5590310779:AAFfveVdq05i9FMWsG4AmnAw3nIGCG3zKbg",
+    "telegram_chat_id": "-1001774540520",
+    "isp_name": "Starnet",
+    "router_ip": "10.70.11.1",
     "router_port": 443,
-    "router_user": "api",
-    "router_password": "apip"
+    "router_user": "failover",
+    "router_password": "9J9M682sEeAs9g"
 }
