@@ -22,6 +22,7 @@ if __name__ == "__main__":
 
     config = get_config()
     peers = get_peers()
+    exception = False
 
     while True:
         for x in peers:
@@ -47,25 +48,29 @@ if __name__ == "__main__":
                             if ping == False:
                                 peer_fail(x)
                             else:
-                                print(exception_fail())
+                                #print(exception_fail())
+                                time.sleep(config['delay'])
                                 continue
                     else:
                         if traffic == True:
                             peer_ok(x)
                         else:
-                            print(exception_fail())
+                            #print(exception_fail())
+                            time.sleep(config['delay'])
                             continue
                 else:
                     if gateway == False:
                         peer_fail(x)
                     else:
-                        print(exception_fail())
+                        #print(exception_fail())
+                        time.sleep(config['delay'])
                         continue
             else:
                 if ifstatus == False:
                     peer_fail(x)
                 else:
-                    print(exception_fail())
+                    #print(exception_fail())
+                    time.sleep(config['delay'])
                     continue
 
         time.sleep(config['delay'])

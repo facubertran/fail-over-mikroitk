@@ -1,3 +1,3 @@
 #Falta
-1. Try Except en todas las conexiones rest
+1. Ver como tratar except cuando router no conecta
 2. Docker??
